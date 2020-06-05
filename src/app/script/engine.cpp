@@ -198,6 +198,7 @@ Engine::Engine()
 
   // Standard Lua libraries
   luaL_requiref(L, LUA_GNAME, luaopen_base, 1);
+  luaL_requiref(L, LUA_LOADLIBNAME, luaopen_package, 1);
   luaL_requiref(L, LUA_COLIBNAME, luaopen_coroutine, 1);
   luaL_requiref(L, LUA_TABLIBNAME, luaopen_table, 1);
   luaL_requiref(L, LUA_IOLIBNAME, luaopen_io, 1);
