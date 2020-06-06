@@ -401,6 +401,9 @@ Engine::Engine()
 
   // Check that we have a clean start (without dirty in the stack)
   ASSERT(lua_gettop(L) == top);
+
+  // Initialize lua scope
+  luaL_dofile(L, "./data/common/init.lua");
 }
 
 Engine::~Engine()
