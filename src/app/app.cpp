@@ -318,6 +318,8 @@ int App::initialize(const AppOptions& options)
 #endif  // ENABLE_UI
 
 #ifdef ENABLE_SCRIPTING
+  if (options.startLuaDebug())
+     m_engine->startDebug(options.debugPort());
   // Call the init() function from all plugins
   LOG("APP: Initializing scripts...\n");
   extensions().executeInitActions();

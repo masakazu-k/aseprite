@@ -78,6 +78,10 @@ AppOptions::AppOptions(int argc, const char* argv[])
 #ifdef _WIN32
   , m_disableWintab(m_po.add("disable-wintab").description("Don't load wintab32.dll library"))
 #endif
+#ifdef ENABLE_SCRIPTING
+  , m_startLuaDebug(false)
+  , m_luaDebug(m_po.add("lua-debug").requiresValue("<port>").description("Enable lua debugger and listen on the specified port"))
+#endif
   , m_help(m_po.add("help").mnemonic('?').description("Display this help and exits"))
   , m_version(m_po.add("version").description("Output version information and exit"))
 {
@@ -90,6 +94,11 @@ AppOptions::AppOptions(int argc, const char* argv[])
       m_verboseLevel = kVerbose;
 
 #ifdef ENABLE_SCRIPTING
+    if (m_po.enabled(m_luaDebug)) {
+      m_luadebugPort = std::stoi(m_po.value_of(m_luaDebug));
+      m_startLuaDebug = true;
+    }
+
     m_startShell = m_po.enabled(m_shell);
 #endif
     m_previewCLI = m_po.enabled(m_preview);

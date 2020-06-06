@@ -29,6 +29,8 @@
 #include "filters/target.h"
 #include "ui/mouse_button.h"
 
+#include "lrdb/server.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <stack>
@@ -44,6 +46,9 @@ base::Chrono luaClock;
 
 // Stack of script filenames that are being executed.
 std::stack<std::string> current_script_dirs;
+
+// Lua debug Server
+std::unique_ptr<lrdb::server> debug_server;
 
 class AddScriptFilename {
 public:
@@ -470,6 +475,12 @@ bool Engine::evalFile(const std::string& filename,
   AddScriptFilename add(absFilename);
   set_app_params(L, params);
   return evalCode(buf.str(), "@" + absFilename);
+}
+
+void Engine::startDebug(int port)
+{
+  debug_server.reset(new lrdb::server(port));
+  (*debug_server).reset(L);
 }
 
 void Engine::onConsolePrint(const char* text)
