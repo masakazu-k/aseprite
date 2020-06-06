@@ -29,6 +29,8 @@
 #include "filters/target.h"
 #include "ui/mouse_button.h"
 
+#include "lrdb/server.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <stack>
@@ -44,6 +46,9 @@ base::Chrono luaClock;
 
 // Stack of script filenames that are being executed.
 std::stack<std::string> current_script_dirs;
+
+// Lua debug Server
+std::unique_ptr<lrdb::server> debug_server;
 
 class AddScriptFilename {
 public:
@@ -277,7 +282,7 @@ Engine::Engine()
   setfield_integer(L, "COLOR_BURN", doc::BlendMode::COLOR_BURN);
   setfield_integer(L, "HARD_LIGHT", doc::BlendMode::HARD_LIGHT);
   setfield_integer(L, "SOFT_LIGHT", doc::BlendMode::SOFT_LIGHT);
-  setfield_integer(L, "DIFFERENCE", doc::BlendMode::DIFFERENCE);
+  //setfield_integer(L, "DIFFERENCE", doc::BlendMode::DIFFERENCE);
   setfield_integer(L, "EXCLUSION", doc::BlendMode::EXCLUSION);
   setfield_integer(L, "HSL_HUE", doc::BlendMode::HSL_HUE);
   setfield_integer(L, "HSL_SATURATION", doc::BlendMode::HSL_SATURATION);
@@ -402,8 +407,6 @@ Engine::Engine()
   // Check that we have a clean start (without dirty in the stack)
   ASSERT(lua_gettop(L) == top);
 
-  // Initialize lua scope
-  luaL_dofile(L, "./data/common/init.lua");
 }
 
 Engine::~Engine()
@@ -474,6 +477,12 @@ bool Engine::evalFile(const std::string& filename,
   AddScriptFilename add(absFilename);
   set_app_params(L, params);
   return evalCode(buf.str(), "@" + absFilename);
+}
+
+void Engine::startDebug(int port)
+{
+  debug_server.reset(new lrdb::server(port));
+  (*debug_server).reset(L);
 }
 
 void Engine::onConsolePrint(const char* text)

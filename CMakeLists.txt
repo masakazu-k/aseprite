@@ -165,6 +165,7 @@ set(HARFBUZZ_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/harfbuzz)
 set(SIMPLEINI_DIR       ${CMAKE_CURRENT_SOURCE_DIR}/third_party/simpleini)
 set(TINYXML_DIR         ${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml)
 set(ZLIB_DIR            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib)
+set(LRDB_DIR            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/LRDB)
 
 # Search in the "cmake" directory for additional CMake modules.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -308,6 +309,13 @@ endif()
 
 # simpleini
 include_directories(${SIMPLEINI_DIR})
+
+# LRDB
+set(LRDB_INCLUDE_DIRS
+  ${LRDB_DIR}/include
+  ${LRDB_DIR}/third_party/asio/asio/include
+  ${LRDB_DIR}/third_party/picojson)
+include_directories(${LRDB_INCLUDE_DIRS})
 
 # Third parties
 add_subdirectory(third_party)

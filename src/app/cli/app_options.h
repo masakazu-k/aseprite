@@ -40,6 +40,8 @@ public:
   bool showHelp() const { return m_showHelp; }
   bool showVersion() const { return m_showVersion; }
   VerboseLevel verboseLevel() const { return m_verboseLevel; }
+  bool startLuaDebug() const { return m_startLuaDebug; }
+  int debugPort() const { return m_luadebugPort; }
 
   const ValueList& values() const {
     return m_po.values();
@@ -160,6 +162,11 @@ private:
   Option& m_debug;
 #ifdef _WIN32
   Option& m_disableWintab;
+#endif
+#ifdef ENABLE_SCRIPTING
+  bool m_startLuaDebug;
+  int m_luadebugPort;
+  Option& m_luaDebug;
 #endif
   Option& m_help;
   Option& m_version;
