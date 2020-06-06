@@ -66,3 +66,6 @@
 [submodule "src/tga"]
 	path = src/tga
 	url = https://github.com/aseprite/tga.git
+[submodule "third_party/LRDB"]
+	path = third_party/LRDB
+	url = https://github.com/satoren/LRDB.git
