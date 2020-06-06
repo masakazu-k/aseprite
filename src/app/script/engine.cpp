@@ -30,6 +30,7 @@
 #include "ui/mouse_button.h"
 
 #include "lrdb/server.hpp"
+#undef DIFFERENCE
 
 #include <fstream>
 #include <sstream>
